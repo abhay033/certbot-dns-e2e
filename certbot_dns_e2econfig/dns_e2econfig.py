@@ -28,7 +28,7 @@ class Authenticator(dns_common.DNSAuthenticator):
     @classmethod
     def add_parser_arguments(cls, add):  # pylint: disable=arguments-differ
         super(Authenticator, cls).add_parser_arguments(
-            add, default_propagation_seconds=120
+            add, default_propagation_seconds=20
         )
         add("credentials", help="E2E credentials INI file.")
 
@@ -111,9 +111,9 @@ class _E2EConfigClient(object):
                                      .format(e, ' ({0})'.format(hint) if hint else '')) 
 
         try:
-            result = Domain(domain_name=domain, zone_name=domain, record_name=self._compute_record_name(domain, record_name), record_ttl=record_ttl, record_type='TXT', content=f'{record_content}', api_key=self.api_key, api_token=self.api_token).add_record() 
+            result = Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=f'{record_content}', api_key=self.api_key, api_token=self.api_token).add_record() 
             result_message = result['message']
-            logger.debug('Successfully added TXT record with id: %d', result_message)
+            logger.debug('Successfully added TXT record with id: %s', result_message)
         except Exception as e:
             logger.debug('Error adding TXT record using the e2e_client API: %s', e)
             raise errors.PluginError('Error adding TXT record using the e2e API: {0}'
@@ -141,7 +141,7 @@ class _E2EConfigClient(object):
             return
         
         try:
-            records = Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domin_valid()
+            records = Domain(domain_name=domain, zone_name=domain, record_name=self._compute_record_name(domain, record_name), record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domin_valid()
             domain_records = records['domain']['rrsets'] 
 
             matching_records = [record for record in domain_records
