@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = "0.2.0"
+version = "0.2.1"
 
 install_requires = [
     "acme>=0.29.0",
@@ -10,6 +10,7 @@ install_requires = [
     "requests",
     "mock",
     "requests-mock",
+    "e2e-client"
 ]
 
 # read the contents of your README file
@@ -20,14 +21,13 @@ with open(path.join(this_directory, "README.rst")) as f:
     long_description = f.read()
 
 setup(
-    name="certbot-dns-ispconfig",
+    name="certbot-dns-e2econfig",
     version=version,
-    description="ispconfig DNS Authenticator plugin for Certbot",
+    description="E2E DNS Authenticator plugin for Certbot",
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    url="https://github.com/m42e/certbot-dns-ispconfig",
-    author="Matthias Bilger",
-    author_email="matthias@bilger.info",
+    author="Abhay Bhati",
+    author_email="abhaybhati987@gmail.com",
     license="Apache License 2.0",
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     classifiers=[
@@ -56,8 +56,8 @@ setup(
     install_requires=install_requires,
     entry_points={
         "certbot.plugins": [
-            "dns-ispconfig = certbot_dns_ispconfig.dns_ispconfig:Authenticator"
+            "dns-e2econfig = certbot_dns_e2econfig.dns_ispconfig:Authenticator"
         ]
     },
-    test_suite="certbot_dns_ispconfig",
+    test_suite="certbot_dns_e2econfig",
 )
