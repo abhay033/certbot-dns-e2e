@@ -111,7 +111,7 @@ class _E2EConfigClient(object):
                                      .format(e, ' ({0})'.format(hint) if hint else '')) 
 
         try:
-            result = Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=f'{record_content}', api_key=self.api_key, api_token=self.api_token).add_record() 
+            result = Domain(domain_name=domain, zone_name=domain, record_name=self._compute_record_name(domain, record_name), record_ttl=record_ttl, record_type='TXT', content=f'{record_content}', api_key=self.api_key, api_token=self.api_token).add_record() 
             result_message = result['message']
             logger.debug('Successfully added TXT record with id: %s', result_message)
         except Exception as e:
@@ -184,7 +184,7 @@ class _E2EConfigClient(object):
                     return domain      
         raise errors.PluginError(f'Unable to determine base domain for {domain_name} using names: '
                                  f'{zone_dns_name_guesses}.')
-    
+    @staticmethod
     def _compute_record_name(self, domain, record_name):
 
         record_name = record_name+'.'+domain
