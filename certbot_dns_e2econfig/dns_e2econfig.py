@@ -5,7 +5,7 @@ import time
 import requests
 
 from e2e_client.manager import Manager
-from e2e_client.domian import Domain
+from e2e_client.domain import Domain
 from certbot import errors
 from certbot.plugins import dns_common
 
