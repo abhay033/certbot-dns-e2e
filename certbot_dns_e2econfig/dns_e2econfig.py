@@ -88,7 +88,8 @@ class _E2EConfigClient(object):
         """
         if not domain.endswith('.'):
             domain += '.'
-        record_content = '"' + record_content + '"'    
+        record_content = '"' + record_content + '"'   
+        record_name = record_name + '.' 
         try:
             Manager(api_key=self.api_key, api_token=self.api_token).check_token()
         except errors as e:
@@ -111,7 +112,7 @@ class _E2EConfigClient(object):
                                      .format(e, ' ({0})'.format(hint) if hint else '')) 
 
         try:
-            result = Domain(domain_name=domain, zone_name=domain, record_name=self._compute_record_name(domain, record_name), record_ttl=record_ttl, record_type='TXT', content=f'{record_content}', api_key=self.api_key, api_token=self.api_token).add_record() 
+            result = Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=f'{record_content}', api_key=self.api_key, api_token=self.api_token).add_record() 
             result_message = result['message']
             logger.debug('Successfully added TXT record with id: %s', result_message)
         except Exception as e:
@@ -133,6 +134,8 @@ class _E2EConfigClient(object):
             domain += '.'
 
         record_content = '"' + record_content + '"'
+        record_name = record_name + '.'
+
         
         try:
             domain = self._find_managed_zone_id(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token)
@@ -141,12 +144,12 @@ class _E2EConfigClient(object):
             return
         
         try:
-            records = Domain(domain_name=domain, zone_name=domain, record_name=self._compute_record_name(domain, record_name), record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domin_valid()
+            records = Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domin_valid()
             domain_records = records['domain']['rrsets'] 
 
             matching_records = [record for record in domain_records
                                 if record['type'] == 'TXT'
-                                and record['name'] == self._compute_record_name(domain, record_name)
+                                and record['name'] == record_name
                                 and record['records'][0]['content']== f'{record_content}']
         except errors as e:
             logger.debug('Error getting DNS records using the e2e API: %s', e)
@@ -184,10 +187,5 @@ class _E2EConfigClient(object):
                     return domain      
         raise errors.PluginError(f'Unable to determine base domain for {domain_name} using names: '
                                  f'{zone_dns_name_guesses}.')
-    @staticmethod
-    def _compute_record_name(domain, record_name):
-
-        record_name = record_name+'.'+domain
-
-        return record_name
+    
         
