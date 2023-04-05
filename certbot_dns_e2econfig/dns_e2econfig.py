@@ -3,19 +3,15 @@ import json
 import logging
 import time
 import requests
-import zope.interface
 
 from e2e_client.manager import Manager
 from e2e_client.domian import Domain
 from certbot import errors
-from certbot import interfaces
 from certbot.plugins import dns_common
 
 logger = logging.getLogger(__name__)
 
 
-@zope.interface.implementer(interfaces.IAuthenticator)
-@zope.interface.provider(interfaces.IPluginFactory)
 class Authenticator(dns_common.DNSAuthenticator):
     """DNS Authenticator for E2EConfig
 
