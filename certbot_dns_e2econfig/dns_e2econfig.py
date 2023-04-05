@@ -100,7 +100,7 @@ class _E2EConfigClient(object):
                                      .format(e, ' ({0})'.format(hint) if hint else ''))
 
         try:
-            Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domain_valid()
+            Domain(domain_name=domain, zone_name=domain, record_name=self._compute_record_name(domain, record_name), record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domain_valid()
             domain = self._find_managed_zone_id(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token)
         except Exception as e:
             if str(e).startswith("Domain not found"):
