@@ -185,7 +185,7 @@ class _E2EConfigClient(object):
         raise errors.PluginError(f'Unable to determine base domain for {domain_name} using names: '
                                  f'{zone_dns_name_guesses}.')
     @staticmethod
-    def _compute_record_name(self, domain, record_name):
+    def _compute_record_name(domain, record_name):
 
         record_name = record_name+'.'+domain
 
