@@ -187,7 +187,7 @@ class _E2EConfigClient(object):
     
     def _compute_record_name(self, domain, record_name):
 
-        record_name = record_name+domain
+        record_name = record_name+'.'+domain
 
         return record_name
         
