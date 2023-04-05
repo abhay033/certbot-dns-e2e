@@ -90,7 +90,7 @@ class _E2EConfigClient(object):
             domain += '.'
         record_content = '"' + record_content + '"'    
         try:
-            Manager(api_key=self.api_key, api_token=self.api_token).checktoken()
+            Manager(api_key=self.api_key, api_token=self.api_token).check_token()
         except Exception as e:
             if str(e).startswith("Token or key is invalid"):
                 hint = 'Did you provide a valid API token?'  
