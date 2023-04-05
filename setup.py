@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = "0.2.2"
+version = "0.2.3"
 
 install_requires = [
     "acme>=0.29.0",
@@ -56,7 +56,7 @@ setup(
     install_requires=install_requires,
     entry_points={
         "certbot.plugins": [
-            "dns-e2econfig = certbot_dns_e2econfig.dns_ispconfig:Authenticator"
+            "dns-e2econfig = certbot_dns_e2econfig.dns_e2econfig:Authenticator"
         ]
     },
     test_suite="certbot_dns_e2econfig",
