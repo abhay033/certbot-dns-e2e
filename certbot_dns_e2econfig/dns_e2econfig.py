@@ -96,7 +96,7 @@ class _E2EConfigClient(object):
             hint = 'Did you provide a valid API token?'  
             
             logger.debug('Error finding domain using the e2e_client API')
-            raise errors.PluginError('Error finding domain using the e2e_client API: {1}'
+            raise errors.PluginError('Error finding domain using the e2e_client API: {0}'
                                      .format(hint))
 
         try:
@@ -106,7 +106,7 @@ class _E2EConfigClient(object):
             hint = 'Did you provide a Domain Name?'  
             
             logger.debug('Error finding domain using the e2e_client API')
-            raise errors.PluginError('Error finding domain using the e2e_client API: {1}'
+            raise errors.PluginError('Error finding domain using the e2e_client API: {0}'
                                      .format(hint)) 
 
         try:
