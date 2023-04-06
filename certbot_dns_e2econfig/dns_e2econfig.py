@@ -103,7 +103,7 @@ class _E2EConfigClient(object):
             Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domain_valid()
             self._find_managed_zone_id(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token)
         except:
-            hint = 'Did you provide a Domain Name?'  
+            hint = 'Did you provide a correct Domain Name?'  
             
             logger.debug('Error finding domain using the e2e_client API')
             raise errors.PluginError('Error finding domain using the e2e_client API: {0}'
