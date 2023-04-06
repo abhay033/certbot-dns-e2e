@@ -6,6 +6,7 @@ import requests
 
 from e2e_client.manager import Manager
 from e2e_client.domain import Domain
+from e2e_client.exceptions import TokenException, DomainException
 from certbot import errors
 from certbot.plugins import dns_common
 
@@ -92,22 +93,22 @@ class _E2EConfigClient(object):
         record_name = record_name + '.' 
         try:
             Manager(api_key=self.api_key, api_token=self.api_token).check_token()
-        except:
+        except TokenException as e:
             hint = 'Did you provide a valid API token?'  
             
             logger.debug('Error finding domain using the e2e_client API')
             raise errors.PluginError('Error finding domain using the e2e_client API: {0}'
-                                     .format(hint))
+                                     .format(e))
 
         try:
             Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domain_valid()
             self._find_managed_zone_id(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token)
-        except:
+        except DomainException as e: 
             hint = 'Did you provide a correct Domain Name?'  
             
             logger.debug('Error finding domain using the e2e_client API')
             raise errors.PluginError('Error finding domain using the e2e_client API: {0}'
-                                     .format(hint)) 
+                                     .format(e)) 
 
         try:
             result = Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=f'{record_content}', api_key=self.api_key, api_token=self.api_token).add_record() 

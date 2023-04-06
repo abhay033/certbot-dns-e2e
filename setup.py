@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools import find_packages
 
-version = "0.4.5"
+version = "0.4.6"
 install_requires = [
     "acme>=0.29.0",
     "certbot>=0.34.0",
