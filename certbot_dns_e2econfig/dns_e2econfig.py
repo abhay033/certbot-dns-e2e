@@ -182,7 +182,6 @@ class _E2EConfigClient(object):
                     domain = matches[0]
                     logger.debug('Found base domain for %s using name %s', domain_name, zone_name)
                     return domain      
-        raise errors.PluginError(f'Unable to determine base domain for {domain_name} using names: '
-                                 f'{zone_dns_name_guesses}.')
+        
     
         
