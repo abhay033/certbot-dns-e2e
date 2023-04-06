@@ -92,33 +92,30 @@ class _E2EConfigClient(object):
         record_name = record_name + '.' 
         try:
             Manager(api_key=self.api_key, api_token=self.api_token).check_token()
-        except Exception as e:
-            if str(e).startswith("Token or key is invalid"):
-                hint = 'Did you provide a valid API token?'  
+        except:
+            hint = 'Did you provide a valid API token?'  
             
-            logger.debug('Error finding domain using the e2e_client API: %s', e)
-            raise errors.PluginError('Error finding domain using the e2e_client API: {0}{1}'
-                                     .format(e, ' ({0})'.format(hint) if hint else ''))
+            logger.debug('Error finding domain using the e2e_client API')
+            raise errors.PluginError('Error finding domain using the e2e_client API: {1}'
+                                     .format(' ({0})'.format(hint) if hint else ''))
 
         try:
             Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domain_valid()
             self._find_managed_zone_id(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token)
-        except Exception as e:
-            if str(e).startswith("Domain not found"):
-                hint = 'Did you provide a Domain Name?'  
+        except:
+            hint = 'Did you provide a Domain Name?'  
             
-            logger.debug('Error finding domain using the e2e_client API: %s', e)
-            raise errors.PluginError('Error finding domain using the e2e_client API: {0}{1}'
-                                     .format(e, ' ({0})'.format(hint) if hint else '')) 
+            logger.debug('Error finding domain using the e2e_client API')
+            raise errors.PluginError('Error finding domain using the e2e_client API: {1}'
+                                     .format(' ({0})'.format(hint) if hint else '')) 
 
         try:
             result = Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=f'{record_content}', api_key=self.api_key, api_token=self.api_token).add_record() 
             result_message = result['message']
             logger.debug('Successfully added TXT record with id: %s', result_message)
-        except Exception as e:
-            logger.debug('Error adding TXT record using the e2e_client API: %s', e)
-            raise errors.PluginError('Error adding TXT record using the e2e API: {0}'
-                                     .format(e))
+        except:
+            logger.debug('Error adding TXT record using the e2e_client API')
+            raise errors.PluginError('Error adding TXT record using the e2e API')
 
     def del_txt_record(self, domain, record_name, record_content, record_ttl):
         """
@@ -151,17 +148,16 @@ class _E2EConfigClient(object):
                                 if record['type'] == 'TXT'
                                 and record['name'] == record_name
                                 and record['records'][0]['content']== f'{record_content}']
-        except errors as e:
-            logger.debug('Error getting DNS records using the e2e API: %s', e)
+        except:
+            logger.debug('Error getting DNS records using the e2e API')
             return
         record_content = record_content.strip('"')
         for record in matching_records:
             try:
                 logger.debug('Removing TXT record with id')
                 Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).delete_record()
-            except errors as e:
-                logger.warning('Error deleting TXT record %s using the e2e API: %s',
-                            e)                      
+            except:
+                logger.warning('Error deleting TXT record %s using the e2e API')                      
 
     def _find_managed_zone_id(self, domain_name, zone_name, record_name, record_ttl, record_type, content, api_key, api_token):
         """
