@@ -92,7 +92,7 @@ class _E2EConfigClient(object):
         record_name = record_name + '.' 
         try:
             Manager(api_key=self.api_key, api_token=self.api_token).check_token()
-        except errors as e:
+        except Exception as e:
             if str(e).startswith("Token or key is invalid"):
                 hint = 'Did you provide a valid API token?'  
             
@@ -103,7 +103,7 @@ class _E2EConfigClient(object):
         try:
             Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domain_valid()
             self._find_managed_zone_id(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token)
-        except errors as e:
+        except Exception as e:
             if str(e).startswith("Domain not found"):
                 hint = 'Did you provide a Domain Name?'  
             
