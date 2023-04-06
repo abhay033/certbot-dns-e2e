@@ -97,7 +97,7 @@ class _E2EConfigClient(object):
             
             logger.debug('Error finding domain using the e2e_client API')
             raise errors.PluginError('Error finding domain using the e2e_client API: {1}'
-                                     .format(' ({0})'.format(hint) if hint else ''))
+                                     .format(hint))
 
         try:
             Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domain_valid()
@@ -107,7 +107,7 @@ class _E2EConfigClient(object):
             
             logger.debug('Error finding domain using the e2e_client API')
             raise errors.PluginError('Error finding domain using the e2e_client API: {1}'
-                                     .format(' ({0})'.format(hint) if hint else '')) 
+                                     .format(hint)) 
 
         try:
             result = Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=f'{record_content}', api_key=self.api_key, api_token=self.api_token).add_record() 
