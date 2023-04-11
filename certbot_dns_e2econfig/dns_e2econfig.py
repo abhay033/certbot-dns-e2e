@@ -101,8 +101,10 @@ class _E2EConfigClient(object):
                                      .format(e))
 
         try:
+            domain = self._find_managed_zone_id(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token)
+            if not domain.endswith('.'):
+                domain += '.'
             Domain(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token).check_domain_valid()
-            self._find_managed_zone_id(domain_name=domain, zone_name=domain, record_name=record_name, record_ttl=record_ttl, record_type='TXT', content=record_content, api_key=self.api_key, api_token=self.api_token)
         except DomainException as e: 
             hint = 'Did you provide a correct Domain Name?'  
             
@@ -181,7 +183,7 @@ class _E2EConfigClient(object):
                 if matches:
                     domain = matches[0]
                     logger.debug('Found base domain for %s using name %s', domain_name, zone_name)
-                    return domain      
+                    return domain['domain_name']      
         
     
         
